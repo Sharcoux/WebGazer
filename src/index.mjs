@@ -1093,4 +1093,50 @@ export const getStoredPoints = () => {
   return [xPast50, yPast50]
 }
 
+/**
+ * Initializes webgazer with the given options. If no options are provided, defaults will be used.
+ * @param {Object} [options] - options object
+ * @param {string} [options.regressionModel] - which regression model to use
+ * @param {string} [options.tracker] - which tracker to use
+ * @param {boolean} [options.saveDataAcrossSessions] - whether to save data across sessions
+ * @param {boolean} [options.showVideoPreview] - whether to show the video preview
+ * @param {boolean} [options.showPredictionPoints] - whether to show prediction points
+ * @param {boolean} [options.applyKalmanFilter] - whether to apply the Kalman filter
+ * @param {(data: PredictionResult, clock: number) => any} [options.onPrediction] - a callback to call with the current prediction
+ * @return {Promise<void>} resolves when initialization is complete
+ */
+export const initialize = async (options = {}) => {
+  setRegression(
+    options.regressionModel || "ridge"
+  )
+  if (options.tracker) setTracker(options.tracker)
+  
+  /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
+  /* elapsed time in milliseconds since begin() was called */
+  if (options.onPrediction) {
+    setGazeListener(options.onPrediction)
+  }
+
+  saveDataAcrossSessions(
+      options.saveDataAcrossSessions ?? true
+  )
+
+  await begin(() => {
+    console.log("Failed to start webgazer");
+  })
+
+  showVideoPreview(
+    options.showVideoPreview ?? true
+  )
+
+  /* shows a square every 100 milliseconds where current prediction is */
+  showPredictionPoints(
+      options.showPredictionPoints ?? true
+  )
+
+  applyKalmanFilter(
+    options.applyKalmanFilter ?? true
+  )
+}
+
 export { params }
