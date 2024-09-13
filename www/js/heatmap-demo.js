@@ -15,23 +15,15 @@ const config = {
 let heatmapInstance
 
 window.addEventListener('load', async function () {
-  // Init webgazer
-  webgazer.setRegression('ridge') /* currently must set regression and tracker */
-  webgazer.setTracker('TFFacemesh')
-  await webgazer.begin(()=>{
-    console.log('fail webgazer')
+  await webgazer.initialize({
+    tracker: 'TFFacemesh',
+    showVideoPreview: false,
+    showPredictionPoints: false,
+    onPrediction: eyeListener
   })
-
-  // Turn off video
-  webgazer.showVideoPreview(false) /* shows all video previews */
-  webgazer.showPredictionPoints(false) /* shows a square every 100 milliseconds where current prediction is */
-
-  // Enable smoothing
-  webgazer.applyKalmanFilter(true) // Kalman Filter defaults to on.
 
   // Set up heatmap parts
   setupHeatmap()
-  webgazer.setGazeListener(eyeListener)
 })
 
 window.addEventListener('beforeunload', function () {

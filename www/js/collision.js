@@ -9,18 +9,12 @@ let force
 let nodes
 
 window.onload = async function () {
-  webgazer.setRegression('ridge') /* currently must set regression and tracker */
-  webgazer.setTracker('TFFacemesh')
-  webgazer.saveDataAcrossSessions(true)
-  await webgazer.begin(() => {
-    console.log('fail webgazer')
+  await webgazer.initialize({
+    tracker: 'TFFacemesh',
+    showPredictionPoints: false,
+    onPrediction: collisionEyeListener
   })
-  webgazer.showVideoPreview(true) /* shows all video previews */
-  webgazer.showPredictionPoints(false) /* shows a square every 100 milliseconds where current prediction is */
-  webgazer.applyKalmanFilter(true) // Kalman Filter defaults to on.
-  // Add the SVG component on the top of everything.
   setupCollisionSystem()
-  webgazer.setGazeListener(collisionEyeListener)
 }
 
 window.onbeforeunload = function () {

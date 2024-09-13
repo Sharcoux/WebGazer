@@ -4,27 +4,7 @@ import swal from 'sweetalert'
 import * as bootstrap from 'bootstrap'
 
 window.onload = async function () {
-  // start the webgazer tracker
-  webgazer.setRegression(
-    'ridge'
-  ) /* currently must set regression and tracker */
-  // webgazer.setTracker('TFFacemesh')
-  webgazer.setGazeListener(function (data, clock) {
-    // console.log(data) /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
-    // console.log(clock) /* elapsed time in milliseconds since webgazer.begin() was called */
-  })
-  webgazer.saveDataAcrossSessions(true)
-  console.log('begin webgazer')
-  await webgazer.begin(() => {
-    console.log('fail webgazer')
-  })
-  webgazer.showVideoPreview(true) /* shows all video previews */
-  webgazer.showPredictionPoints(
-    true
-  ) /* shows a square every 100 milliseconds where current prediction is */
-  webgazer.applyKalmanFilter(
-    true
-  ) /* Kalman Filter defaults to on. Can be toggled by user. */
+  await webgazer.initialize()
 
   // Set up the webgazer video feedback.
   const setup = function () {
