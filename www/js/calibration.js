@@ -18,6 +18,11 @@ window.onload = async function () {
   setup()
 }
 
+const kalmanToggleButton = document.getElementById('toggleKalman')
+if (kalmanToggleButton) {
+  kalmanToggleButton.onclick = () => webgazer.applyKalmanFilter(!webgazer.params.applyKalmanFilter)
+}
+
 window.onbeforeunload = function () {
   webgazer.end()
 }
@@ -25,7 +30,7 @@ window.onbeforeunload = function () {
 /**
  * Restart the calibration process by clearing the local storage and reseting the calibration point
  */
-function Restart() {
+function Restart () {
   const accuracyLabel = document.getElementById('Accuracy')
   if (accuracyLabel) {
     accuracyLabel.innerHTML = '<a>Not yet Calibrated</a>'
@@ -116,8 +121,8 @@ function calcAccuracy () {
         closeOnClickOutside: false,
         buttons: {
           cancel: {
-            text:'Recalibrate',
-            value:false
+            text: 'Recalibrate',
+            value: false
           },
           confirm: true
         }
@@ -197,7 +202,7 @@ function calPointClick (node) {
  * checks that all buttons have been clicked 5 times each, and then goes on to measuring the precision
  */
 // $(document).ready(function(){
-function docLoad() {
+function docLoad () {
   ClearCanvas()
   helpModalShow()
 
